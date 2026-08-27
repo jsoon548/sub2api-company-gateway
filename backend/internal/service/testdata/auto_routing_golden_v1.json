@@ -1,0 +1,67 @@
+{
+  "contract_version": "core-gateway-autoRouting-auto-routing-golden-v2",
+  "cases": [
+    {
+      "id": "economy_deterministic_rewrite",
+      "body": {"model":"auto","messages":[{"role":"user","content":"Rewrite this sentence to be concise: The meeting will take place tomorrow."}]},
+      "expected_tier": "economy",
+      "expected_model": "economy-model",
+      "expected_classifier_status": "not_called",
+      "expected_certainty": "deterministic"
+    },
+    {
+      "id": "general_classifier",
+      "body": {"model":"auto","messages":[{"role":"user","content":"Help me plan an implementation approach for this feature."}]},
+      "classifier": {"complexity":"general","certainty":"decisive","explanation":"General implementation planning.","input_units":18,"output_units":5},
+      "expected_tier": "general",
+      "expected_model": "general-model",
+      "expected_classifier_status": "completed",
+      "expected_certainty": "decisive"
+    },
+    {
+      "id": "advanced_cross_file",
+      "body": {"model":"auto","input":"Make a cross-file refactor and reason about the concurrency invariants."},
+      "expected_tier": "advanced",
+      "expected_model": "advanced-model",
+      "expected_classifier_status": "not_called",
+      "expected_certainty": "deterministic"
+    },
+    {
+      "id": "uncertain_is_general",
+      "body": {"model":"auto","input":"Can you help with this request?"},
+      "classifier": {"complexity":"simple","certainty":"uncertain","explanation":"The request does not clearly match one complexity label.","input_units":8,"output_units":3},
+      "expected_tier": "general",
+      "expected_model": "general-model",
+      "expected_classifier_status": "completed",
+      "expected_certainty": "uncertain"
+    },
+    {
+      "id": "classifier_timeout_is_general",
+      "body": {"model":"auto","input":"An ambiguous task that requires classification."},
+      "classifier_timeout": true,
+      "expected_tier": "general",
+      "expected_model": "general-model",
+      "expected_classifier_status": "timeout",
+      "expected_certainty": "uncertain"
+    },
+    {
+      "id": "image_capability_only_falls_up",
+      "body": {"model":"auto","messages":[{"role":"user","content":[{"type":"text","text":"Rewrite this caption."},{"type":"image","source":{"type":"base64","data":"synthetic"}}]}]},
+      "classifier": {"complexity":"simple","certainty":"decisive","explanation":"Simple rewrite with an image constraint.","input_units":12,"output_units":4},
+      "expected_tier": "general",
+      "expected_model": "general-model",
+      "expected_classifier_status": "completed",
+      "expected_certainty": "decisive"
+    },
+    {
+      "id": "unavailable_general_only_falls_up",
+      "body": {"model":"auto","input":"Draft an implementation checklist."},
+      "classifier": {"complexity":"general","certainty":"decisive","explanation":"General task.","input_units":10,"output_units":3},
+      "unavailable_models": ["general-model"],
+      "expected_tier": "advanced",
+      "expected_model": "advanced-model",
+      "expected_classifier_status": "completed",
+      "expected_certainty": "decisive"
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "contract_version": "core-gateway-clientProfile-client-profiles-v1",
+  "user_agent_admission": false,
+  "profiles": [
+    {
+      "id": "claude_code_messages_unary_tool",
+      "client": "claude_code",
+      "profile_version": "anthropic-messages-v1",
+      "method": "POST",
+      "path": "/v1/messages",
+      "transport": "http",
+      "headers": {"content-type":"application/json","anthropic-version":"2023-06-01","x-api-key":"{{synthetic_api_key}}","user-agent":"claude-cli/2.synthetic"},
+      "body": {"model":"clientProfile-synthetic-model","max_tokens":128,"stream":false,"messages":[{"role":"user","content":"synthetic tool request"}],"tools":[{"name":"lookup","description":"synthetic","input_schema":{"type":"object"}}]},
+      "decision": "allow"
+    },
+    {
+      "id": "claude_code_messages_sse",
+      "client": "claude_code",
+      "profile_version": "anthropic-messages-v1",
+      "method": "POST",
+      "path": "/v1/messages",
+      "transport": "sse",
+      "headers": {"content-type":"application/json","anthropic-version":"2023-06-01","x-api-key":"{{synthetic_api_key}}","user-agent":"claude-cli/2.synthetic"},
+      "body": {"model":"clientProfile-synthetic-model","max_tokens":128,"stream":true,"messages":[{"role":"user","content":"synthetic stream"}]},
+      "decision": "allow"
+    },
+    {
+      "id": "claude_code_count_tokens",
+      "client": "claude_code",
+      "profile_version": "anthropic-messages-v1",
+      "method": "POST",
+      "path": "/v1/messages/count_tokens",
+      "transport": "http",
+      "headers": {"content-type":"application/json","anthropic-version":"2023-06-01","x-api-key":"{{synthetic_api_key}}","user-agent":"claude-cli/2.synthetic"},
+      "body": {"model":"clientProfile-synthetic-model","messages":[{"role":"user","content":"synthetic count"}]},
+      "decision": "allow"
+    },
+    {
+      "id": "codex_responses_unary_tool",
+      "client": "codex",
+      "profile_version": "openai-responses-v1",
+      "method": "POST",
+      "path": "/v1/responses",
+      "transport": "http",
+      "headers": {"authorization":"Bearer {{synthetic_api_key}}","content-type":"application/json","originator":"codex_cli_rs","user-agent":"codex_cli_rs/0.synthetic"},
+      "body": {"model":"clientProfile-synthetic-model","stream":false,"input":"synthetic tool request","tools":[{"type":"function","name":"lookup","description":"synthetic","parameters":{"type":"object"}}]},
+      "decision": "allow"
+    },
+    {
+      "id": "codex_responses_sse",
+      "client": "codex",
+      "profile_version": "openai-responses-v1",
+      "method": "POST",
+      "path": "/responses",
+      "transport": "sse",
+      "headers": {"authorization":"Bearer {{synthetic_api_key}}","content-type":"application/json","originator":"codex_cli_rs","user-agent":"codex_cli_rs/0.synthetic"},
+      "body": {"model":"clientProfile-synthetic-model","stream":true,"input":"synthetic stream"},
+      "decision": "allow"
+    },
+    {
+      "id": "codex_compact_unary",
+      "client": "codex",
+      "profile_version": "openai-responses-v1",
+      "method": "POST",
+      "path": "/v1/responses/compact",
+      "transport": "http",
+      "headers": {"authorization":"Bearer {{synthetic_api_key}}","content-type":"application/json","originator":"codex_cli_rs","user-agent":"codex_cli_rs/0.synthetic"},
+      "body": {"model":"clientProfile-synthetic-model","stream":false,"input":[{"role":"user","content":"synthetic compact"}]},
+      "decision": "allow"
+    },
+    {
+      "id": "codex_compact_sse_alias",
+      "client": "codex",
+      "profile_version": "openai-responses-v1",
+      "method": "POST",
+      "path": "/responses/compact",
+      "transport": "sse",
+      "headers": {"authorization":"Bearer {{synthetic_api_key}}","content-type":"application/json","originator":"codex_cli_rs","user-agent":"codex_cli_rs/0.synthetic"},
+      "body": {"model":"clientProfile-synthetic-model","stream":true,"input":[{"role":"user","content":"synthetic compact stream"}]},
+      "decision": "allow"
+    },
+    {
+      "id": "opencode_messages_profile_reuse",
+      "client": "opencode",
+      "profile_version": "anthropic-messages-v1",
+      "reused_profile": "anthropic-messages-v1",
+      "method": "POST",
+      "path": "/v1/messages",
+      "transport": "http",
+      "headers": {"content-type":"application/json","anthropic-version":"2023-06-01","x-api-key":"{{synthetic_api_key}}","user-agent":"opencode/1.synthetic"},
+      "body": {"model":"clientProfile-synthetic-model","max_tokens":128,"messages":[{"role":"user","content":"synthetic opencode messages"}]},
+      "decision": "allow"
+    },
+    {
+      "id": "opencode_responses_profile_reuse",
+      "client": "opencode",
+      "profile_version": "openai-responses-v1",
+      "reused_profile": "openai-responses-v1",
+      "method": "POST",
+      "path": "/v1/responses",
+      "transport": "http",
+      "headers": {"authorization":"Bearer {{synthetic_api_key}}","content-type":"application/json","user-agent":"opencode/1.synthetic"},
+      "body": {"model":"clientProfile-synthetic-model","stream":false,"input":"synthetic opencode responses"},
+      "decision": "allow"
+    },
+    {
+      "id": "opencode_user_agent_cannot_widen_chat",
+      "client": "opencode",
+      "profile_version": "core-gateway-default-deny-v1",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "transport": "http",
+      "headers": {"authorization":"Bearer {{synthetic_api_key}}","content-type":"application/json","user-agent":"opencode/1.synthetic"},
+      "body": {"model":"clientProfile-synthetic-model","messages":[{"role":"user","content":"must stay denied"}]},
+      "decision": "deny"
+    },
+    {
+      "id": "codex_websocket_cannot_widen_responses",
+      "client": "codex",
+      "profile_version": "core-gateway-default-deny-v1",
+      "method": "GET",
+      "path": "/v1/responses",
+      "transport": "websocket",
+      "headers": {"authorization":"Bearer {{synthetic_api_key}}","connection":"Upgrade","upgrade":"websocket","user-agent":"codex_cli_rs/0.synthetic"},
+      "body": null,
+      "decision": "deny"
+    }
+  ]
+}

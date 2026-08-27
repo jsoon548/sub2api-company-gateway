@@ -1,0 +1,40 @@
+{
+  "contract_version": "core-gateway-contracts-v1",
+  "request_id_policy": {
+    "header": "X-Gateway-Request-ID",
+    "owner": "gateway",
+    "generation": "unique_per_employee_api_request",
+    "client_header_input_handling": "ignore_and_replace",
+    "client_header_can_override": false,
+    "response_header_required": true,
+    "generated_error_body_required": true,
+    "example_gateway_request_id": "11111111-2222-4333-8444-555555555555",
+    "separate_identifiers": ["client_request_id", "upstream_request_id", "usage_logs.request_id"],
+    "legacy_usage_request_id_reused": false
+  },
+  "errors": [
+    {"id":"anthropic_audit_unavailable","scenario":"audit_unavailable","protocol":"anthropic","code":"gateway_audit_unavailable","http_status":503,"upstream_call_count":0,"response_header_required":true,"body":{"type":"error","error":{"type":"api_error","message":"Audit service is unavailable; request was not sent upstream.","code":"gateway_audit_unavailable"},"gateway_request_id":"11111111-2222-4333-8444-555555555555"}},
+    {"id":"openai_audit_unavailable","scenario":"audit_unavailable","protocol":"openai","code":"gateway_audit_unavailable","http_status":503,"upstream_call_count":0,"response_header_required":true,"body":{"error":{"message":"Audit service is unavailable; request was not sent upstream.","type":"server_error","code":"gateway_audit_unavailable"},"gateway_request_id":"11111111-2222-4333-8444-555555555555"}},
+
+    {"id":"anthropic_entry_not_allowed","scenario":"entry_not_allowed","protocol":"anthropic","code":"gateway_entry_not_allowed","http_status":403,"upstream_call_count":0,"response_header_required":true,"body":{"type":"error","error":{"type":"permission_error","message":"This method, path, transport, or profile is not allowed; request was not sent upstream.","code":"gateway_entry_not_allowed"},"gateway_request_id":"11111111-2222-4333-8444-555555555555"}},
+    {"id":"openai_entry_not_allowed","scenario":"entry_not_allowed","protocol":"openai","code":"gateway_entry_not_allowed","http_status":403,"upstream_call_count":0,"response_header_required":true,"body":{"error":{"message":"This method, path, transport, or profile is not allowed; request was not sent upstream.","type":"invalid_request_error","code":"gateway_entry_not_allowed"},"gateway_request_id":"11111111-2222-4333-8444-555555555555"}},
+
+    {"id":"anthropic_authentication_failed","scenario":"authentication_failed","protocol":"anthropic","code":"gateway_authentication_failed","http_status":401,"upstream_call_count":0,"response_header_required":true,"body":{"type":"error","error":{"type":"authentication_error","message":"Authentication failed; request was not sent upstream.","code":"gateway_authentication_failed"},"gateway_request_id":"11111111-2222-4333-8444-555555555555"}},
+    {"id":"openai_authentication_failed","scenario":"authentication_failed","protocol":"openai","code":"gateway_authentication_failed","http_status":401,"upstream_call_count":0,"response_header_required":true,"body":{"error":{"message":"Authentication failed; request was not sent upstream.","type":"authentication_error","code":"gateway_authentication_failed"},"gateway_request_id":"11111111-2222-4333-8444-555555555555"}},
+
+    {"id":"anthropic_account_disabled","scenario":"account_disabled","protocol":"anthropic","code":"gateway_account_disabled","http_status":403,"upstream_call_count":0,"response_header_required":true,"body":{"type":"error","error":{"type":"permission_error","message":"This account is disabled; request was not sent upstream.","code":"gateway_account_disabled"},"gateway_request_id":"11111111-2222-4333-8444-555555555555"}},
+    {"id":"openai_account_disabled","scenario":"account_disabled","protocol":"openai","code":"gateway_account_disabled","http_status":403,"upstream_call_count":0,"response_header_required":true,"body":{"error":{"message":"This account is disabled; request was not sent upstream.","type":"permission_error","code":"gateway_account_disabled"},"gateway_request_id":"11111111-2222-4333-8444-555555555555"}},
+
+    {"id":"anthropic_model_not_allowed","scenario":"explicit_model_not_allowed","protocol":"anthropic","code":"gateway_model_not_allowed","http_status":403,"upstream_call_count":0,"response_header_required":true,"body":{"type":"error","error":{"type":"permission_error","message":"The explicitly selected model is not allowed; request was not sent upstream.","code":"gateway_model_not_allowed"},"gateway_request_id":"11111111-2222-4333-8444-555555555555"}},
+    {"id":"openai_model_not_allowed","scenario":"explicit_model_not_allowed","protocol":"openai","code":"gateway_model_not_allowed","http_status":403,"upstream_call_count":0,"response_header_required":true,"body":{"error":{"message":"The explicitly selected model is not allowed; request was not sent upstream.","type":"invalid_request_error","code":"gateway_model_not_allowed"},"gateway_request_id":"11111111-2222-4333-8444-555555555555"}},
+
+    {"id":"anthropic_model_unschedulable","scenario":"explicit_model_unschedulable","protocol":"anthropic","code":"gateway_model_unavailable","http_status":503,"upstream_call_count":0,"response_header_required":true,"body":{"type":"error","error":{"type":"api_error","message":"The explicitly selected model is currently unavailable; request was not sent upstream.","code":"gateway_model_unavailable"},"gateway_request_id":"11111111-2222-4333-8444-555555555555"}},
+    {"id":"openai_model_unschedulable","scenario":"explicit_model_unschedulable","protocol":"openai","code":"gateway_model_unavailable","http_status":503,"upstream_call_count":0,"response_header_required":true,"body":{"error":{"message":"The explicitly selected model is currently unavailable; request was not sent upstream.","type":"server_error","code":"gateway_model_unavailable"},"gateway_request_id":"11111111-2222-4333-8444-555555555555"}},
+
+    {"id":"anthropic_quota_new_session_blocked","scenario":"quota_exhausted_or_new_session_blocked","protocol":"anthropic","code":"gateway_quota_exhausted","http_status":429,"upstream_call_count":0,"response_header_required":true,"body":{"type":"error","error":{"type":"rate_limit_error","message":"Employee quota is exhausted and this request cannot start or continue an eligible session; request was not sent upstream.","code":"gateway_quota_exhausted"},"gateway_request_id":"11111111-2222-4333-8444-555555555555"}},
+    {"id":"openai_quota_new_session_blocked","scenario":"quota_exhausted_or_new_session_blocked","protocol":"openai","code":"gateway_quota_exhausted","http_status":429,"upstream_call_count":0,"response_header_required":true,"body":{"error":{"message":"Employee quota is exhausted and this request cannot start or continue an eligible session; request was not sent upstream.","type":"rate_limit_error","code":"gateway_quota_exhausted"},"gateway_request_id":"11111111-2222-4333-8444-555555555555"}},
+
+    {"id":"anthropic_auto_unavailable","scenario":"auto_not_enabled_or_not_in_pilot","protocol":"anthropic","code":"gateway_auto_unavailable","http_status":403,"upstream_call_count":0,"response_header_required":true,"body":{"type":"error","error":{"type":"permission_error","message":"Auto mode is not enabled for this account; request was not sent upstream.","code":"gateway_auto_unavailable"},"gateway_request_id":"11111111-2222-4333-8444-555555555555"}},
+    {"id":"openai_auto_unavailable","scenario":"auto_not_enabled_or_not_in_pilot","protocol":"openai","code":"gateway_auto_unavailable","http_status":403,"upstream_call_count":0,"response_header_required":true,"body":{"error":{"message":"Auto mode is not enabled for this account; request was not sent upstream.","type":"invalid_request_error","code":"gateway_auto_unavailable"},"gateway_request_id":"11111111-2222-4333-8444-555555555555"}}
+  ]
+}
